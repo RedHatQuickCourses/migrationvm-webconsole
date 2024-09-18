@@ -1,6 +1,7 @@
-= Section 2
+= What is live migration of a virtual machine?
 
-* Create multiple copies of this section as needed.
-* Remove any unnecessary sections or chapter pages.
-* Customize the section as appropriate.
-* Ensure that each page contains a manageable amount of content.
+In a live migration, the VM continues to run on the source host machine. The Kernel-based Virtual Machine (KVM) transfers the memory pages of the VM to the destination host. When the migration is nearly complete, KVM briefly suspends the VM, and resumes it on the destination host.
+
+In case of a non-live migration, the KVM suspends the VM, copies its configuration and its memory to the destination host, and resumes the VM.
+
+For more information check the documentation on https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_virtualization/migrating-virtual-machines_configuring-and-managing-virtualization/[How migrating virtual machines works^].

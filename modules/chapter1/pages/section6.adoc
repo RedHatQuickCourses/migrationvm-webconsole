@@ -1,0 +1,318 @@
+= Guided Exercise: Guided solution
+
+Create a virtual machine and live migrate it using the web console.
+
+*Outcomes*
+
+ - Live-migrate a virtual machine (VM) from servera to serverb.
+
+As the `student` user on the `workstation` machine, use the lab command to prepare your environment for this exercise, and to ensure that all required resources are available.
+
+ [student@workstation ~]$ lab start migration-cockpit
+
+*Instructions*
+
+. Configure shared storage for `servera` and `serverb`.
+ .. Verify the NFS export on the `workstation` machine. The workstation machine is configured as a NFS server by the `lab start` command you ran in the preceding step.
+ 
+
+        [student@workstation ~]$ sudo exportfs
+        [sudo] password for student:
+        /mnt          	<world>
+        
+ .. Open a new terminal to `workstation` and log in to `servera`. Mount the shared directory on the source machine (`servera`).
+ ... Use the sudo password `student` whenever required.
+
+        [student@workstation ~]$ ssh servera
+        [student@servera ~]$ sudo -i
+        [sudo] password for student:
+        [root@servera ~]# mount workstation:/mnt /mnt
+        [root@servera ~]# mount | grep workstation
+        workstation:/mnt on /mnt type nfs4 ...
+ 
+ ... The last command verifies that the mount is successful.
+
+.. Open a new terminal to `workstation` and log in to `serverb`. Mount the shared directory on the destination machine (`serverb`).
+... Use the sudo password `student` whenever required.
+
+        [student@workstation ~]$ ssh serverb
+        [student@serverb ~]$ sudo -i
+        [sudo] password for student:
+        [root@serverb ~]# mount workstation:/mnt /mnt
+        [root@serverb ~]# mount | grep workstation
+        workstation:/mnt on /mnt type nfs4 ...
+
+... The last command verifies that the mount is successful.
+
+. Add secondary hosts on the RHEL web console
+.. Switch to the `workstation` terminal and enable the service for the RHEL web console.
+
+        [student@workstation ~]$ sudo -i
+        [sudo] password for student:
+        [root@workstion ~]# systemctl enable --now cockpit.socket
+
+.. Visit the GNOME login screen on the `workstation` machine. Click the `student` user account. Enter student when prompted for the password.
+
+.. Navigate to `https://localhost:9090` to access the RHEL web console on the Firefox browser.
++
+image::2.3.png[float=center,align=center]
+
+.. Proceed with the self-signed certificate by clicking on *Advanced...* and *Accept the Risk and Continue*.
++
+image::2.4.png[float=center,align=center]
+
+.. Log in by using the username `student` and by entering the `student` password.
++
+image::2.5.png[float="center",align=center] 
+
+.. Click *Turn on administrative access*. Enter the password student when prompted and click *Authenticate*.
++
+image::2.6.png[float="center",align=center]
+
+... You have now switched to administrative access on the primary host.
+.. Add `servera` as a secondary host.
+... Expand the hidden Hosts menu by clicking the down-arrow in the left pane. The image displays the host menu section.
++
+image::2.7.1.png[float="center",align=center]
+
+... In the *Host menu*, select *Add new host*.
++
+image::2.7.2.png[float="center",align=center]
+
+... The Add new host dialog appears.
+... In the Add new host dialog, configure the following properties and *click Add*.
+    
+    Host: servera
+    User name: student
++
+image::2.7.3.png[float="center",align=center]
+
+.. Add `serverb` as another secondary host in the similar way.
+ 
+        Host: serverb
+        User name: student
++
+image::2.8.png[float="center",align=center]
+
+.. Verify both `servera` and `serverb` got added successfully by *clicking on their names* in the left pane. You can see details of `servera` and `serverb` after clicking on them.
++
+image::2.9.png[float="center",align=center]
+
+. Create a storage volume on servera.
+.. Switch to `servera` by clicking the down-arrow in the left pane and click `servera`.
+.. Click *Turn on administrative access* on `servera`. Enter the password `student` when prompted and click *Authenticate*.
++
+image::3.2.png[float="center",align=center]
+.. Switch to the *terminal* to start and enable the *libvirtd* service on `servera` and `serverb`.
+
+ [root@servera ~]# systemctl enable --now libvirtd
+ Created symlink /etc/systemd/system/multi-user.target.wants/libvirtd.service → /usr/lib/systemd/system/libvirtd.service.
+ ...output omitted...
+
+ [root@serverb ~]# systemctl enable --now libvirtd
+ Created symlink /etc/systemd/system/multi-user.target.wants/libvirtd.service → /usr/lib/systemd/system/libvirtd.service.
+ ...output omitted...
+
+.. Refresh the web page (web console) in Firefox browser to reflect the changes.
++
+ Note: The Virtual Machines option on the sidebar is visible on servera and serverb because the cockpit-machines package is installed on both servera and serverb.
+ This installation was done when you ran the lab start migration-cockpit script at the beginning of this exercise.
+ You do not see the Virtual Machines option on the workstation web console as this package is not installed on it.
+
+.. Navigate to *Virtual Machines → Storage pools*. Click *Create storage pool*.
+...Enter the details as given in the following table:
++
+|===========================
+|Name	|migration-test
+|Type	|Network file system
+|Target |path	/mnt/
+|Host	|workstation
+|Source |path	/mnt
+|===========================
+
+... *Click Create*.
++
+image::3.5.png[float="center",align=center]
+... Make sure to use the same names as given in the instructions for a successful grading at the end of the exercise.
+
+.. Click *Activate*. This button starts the inactivate storage pool.
+.. Add a storage volume in the `migration-test` storage pool.
+... Click the down-arrow key and click the *Storage volumes* tab. Click *Create volume*.
++
+image::3.7.1.png[float="center",align=center]
+
+... Enter the name as migration-volume and the size 20 GiB. Click *Create*.
++
+image::3.7.2.png[float="center",align=center]
+
+.. Verify that the storage volume is created. Refer the following screenshot to match it with your UI.
++
+image::3.8.png[float="center",align=center]
+
+. Verify the `default network` already present on both `servera` and `serverb`.
+.. On `servera`, Click *Virtual machines* breadcrumb.
++
+image::4.1.png[float="center",align=center]
+
+.. Click *1 Network*.
+.. Verify that you have a network named `default`. Click the down-arrow to expand the details and review them. Do not make any changes.
++
+image::4.3.png[float="center",align=center]
+
+... You use this network to create the VM in a later step.
+
+.. Switch to `serverb`, click *Turn on administrative access*. Enter the password student and click *Authenticate*.
+... Navigate to *Virtual machines → 1 Network* to view the same default network. Verify that the network is in active state. Do not make any other changes.
+... The source and destination must have identical network for the migration to succeed.
+
+. Set the required SElinux contexts on the shared volume.
+.. Run the following commands on `servera` so that SElinux allows the virsh utility to access the shared volume for the VM creation.
+ 
+ [root@servera ~]# semanage fcontext -a -t virt_image_t '/mnt/migration-volume'
+ [root@servera ~]# restorecon -v '/mnt/migration-volume'
+ [root@servera ~]# setsebool -P virt_use_nfs 1
+
+.. Run the same commands on `serverb` as it is the destination host.
+
+ [root@serverb ~]# semanage fcontext -a -t virt_image_t '/mnt/migration-volume'
+ [root@serverb ~]# restorecon -v '/mnt/migration-volume'
+ [root@serverb ~]# setsebool -P virt_use_nfs 1
+
+. Create a virtual machine on `servera`.
+.. Switch to `servera` on the RHEL web console UI.
+.. Create a virtual machine on `servera` which is the source host from which you migrate the VM.
+... Click *Virtual machines* breadcrumb and then click *Create VM*.
++
+image::6.2.png[float="center",align=center]
+
+.. Enter the details as mentioned in the below table.
++
+|===
+|Name	|test-rhel
+|Connection	|System
+|Installation type	|Local install media (ISO image or distro install tree)
+| Installation source	|/mnt/rhel-guest-image.qcow2
+| Operating system	|Red Hat Enterprise Linux 8.5
+| Storage	|migration-test
+| Volume	|migration-volume
+| Memory	|2 GiB
+|===
+... Click *Create*.
++
+image::6.3.png[float="center",align=center]
+
+.. Verify that VM is in the `running` state.
++
+image::6.4.png[float="center",align=center]
+
+. Allow the required port number range on the firewall of `servera` and `serverb`.
+.. Open the port range of `49152-49215` on `servera` and `serverb`. Ports `49152-49215`` are needed by QEMU for transfering the memory and disk migration data.
+
+ [root@servera ~]# firewall-cmd --permanent --add-port=49152-49215/tcp
+ success
+ [root@servera ~]# firewall-cmd --reload
+ success
+
+ [root@serverb ~]# firewall-cmd --permanent --add-port=49152-49215/tcp
+ success
+ [root@serverb ~]# firewall-cmd --reload
+ success
+
+. Live-migrate the VM.
+.. Use the Migrate option from the dropdown on selecting the three dots of the VM.
++
+image::8.1.png[float="center",align=center]
+
+.. Enter the Destination URI as `qemu+ssh://serverb/system` and click *Migrate*.
++
+image::8.2.png[float="center",align=center]
+
+.. Verify that you see the following error.
+ 
+ Cannot recv data: Host key verification failed.: Connection reset by peer
++
+image::8.3.png[float="center",align=center]
+
+... `virsh migrate` runs the migration as the `root` user. For migration to succeed, you copy the public keys of the `root` user between `servera` and `serverb`, remember that this was a prerequisite.
+
+. Exchange SSH keys of the root user of `servera` and `serverb`.
+.. Generate a SSH key on `servera`.
+
+ [root@servera ~]# ssh-keygen
+ Generating public/private rsa key pair.
+ Enter file in which to save the key (/root/.ssh/id_rsa):
+ Enter passphrase (empty for no passphrase):
+ Enter same passphrase again:
+ Your identification has been saved in /root/.ssh/id_rsa
+ Your public key has been saved in /root/.ssh/id_rsa.pub
+ The key fingerprint is:
+ ...output omitted...
+
+.. Copy the contents of the public key file at `/root/.ssh/id_rsa.pub` on `servera` and add it to `/root/.ssh/authorized_keys` file in `serverb`.
+
+.. Generate a SSH key on `serverb`.
+
+ [root@serverb ~]# ssh-keygen
+ Generating public/private rsa key pair.
+ Enter file in which to save the key (/root/.ssh/id_rsa):
+ Enter passphrase (empty for no passphrase):
+ Enter same passphrase again:
+ Your identification has been saved in /root/.ssh/id_rsa
+ Your public key has been saved in /root/.ssh/id_rsa.pub
+ The key fingerprint is:
+ SHA256:oGOtnsrVYrbRx8a819sszA/cMp50U++Noz1JzGWPC6M root@serverb.lab.example.com
+ The key's randomart image is:
+ ...output omitted...
+
+.. Copy the contents of the public key file at `/root/.ssh/id_rsa.pub` on `serverb` and add it to `/root/.ssh/authorized_keys` file in `servera`.
+
+.. Ensure that you can SSH from `servera` to `serverb` as `root` user and vice versa.
+
+ [root@servera ~]# ssh serverb
+ The authenticity of host 'serverb (172.25.250.11)' can't be established.
+ ED25519 key fingerprint is SHA256:peUGgfxFNw6Jt6WK4CB2rs+jql1/LhA32M1+8zBawLI.
+ This key is not known by any other names
+ Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+ Warning: Permanently added 'serverb' (ED25519) to the list of known hosts.
+ ...output omitted...
+ 
+ [root@serverb ~]# ssh servera
+ The authenticity of host 'servera (172.25.250.10)' can't be established.
+ ED25519 key fingerprint is SHA256:peUGgfxFNw6Jt6WK4CB2rs+jql1/LhA32M1+8zBawLI.
+ This key is not known by any other names
+ Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+ Warning: Permanently added 'servera' (ED25519) to the list of known hosts.
+ ...output omitted...
+ [root@servera ~]#
+
+. Migrate the VM.
+.. Click *Migrate*. You do not see the VM on `servera` anymore.
+.. Switch to `serverb` on the web console and verify that the VM is migrated successfully.
+... Refresh the web page if VM is not seen on serverb after migration. The VM should be in Running state.
++
+image::10.2.png[float="center",align=center]
+
+... Alternatively, verify with the `virsh list` command on `serverb` as the `root` user.
+
+ [root@serverb ~]# virsh list
+  Id   Name        State
+ ---------------------------
+  1    test-rhel   running
+
+. Verify your work.
+.. Run the following command on the workstation machine as the student user to verify your work.
+
+ [student@workstation ~]$ lab grade migration-cockpit
+  Grading lab.
+  
+  SUCCESS Checking lab systems
+  SUCCESS Verifying that the VM with name 'test-rhel' exists on serverb
+  SUCCESS Verifying that the test-rhel VM migrated from servera to serverb
+
+  Overall lab grade: PASS
+
+*Finish*
+
+On the `workstation` machine, use the lab command to complete this exercise. This step is important to ensure that resources from previous exercises do not impact upcoming exercises.
+
+ [student@workstation ~]$ lab finish migration-cockpit

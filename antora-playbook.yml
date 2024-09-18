@@ -1,6 +1,6 @@
 site:
-  title: FIXME Course Title
-  start_page: REPLACEREPONAME::index.adoc
+  title: "Live migration of virtual machine using web console"
+  start_page: MigratonVM-webconsole::index.adoc
 
 content:
   sources:

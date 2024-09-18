@@ -1,0 +1,22 @@
+= What are the considerations for a successful live migration?
+
+* All systems in the RHEL web console (cockpit) must be set up with administrator level permissions.
+* Secure Shell (SSH) keys need to be exchanged within the cockpit UI.
+* You must generate an ssh key as root on both of the source and destination systems and copy them to the other system. Refer this upstream issue at https://github.com/cockpit-project/cockpit-machines/issues/684/[VM migration: It's not intuitive with what user SSH key exchange should be set up^]
+* The ports 16514 and 49152 through 49215 on source & destination should be reachable.
+* Cockpit-machines live migration feature requires that the virtual machine be backed by shared storage.
+* A virtual machine has to be running for the migrate option to be available. Non-live migrations are unsupported.
+* NUMA systems require the same topology.
+* The emulated CPUs, both on the source VM and the destination VM, must be same, or the migration might fail. Any differences between the VMs in the following CPU related areas can cause problems with the migration:
+  - CPU model
+  - Firmware settings
+  - Microcode version
+  - BIOS version
+  - BIOS settings
+  - QEMU version
+  - Kernel version
+  
+* For VMs with assigned host devices, migration can fail or the VMs might not work correctly if migrated. Such configurations include:
+  - Device passthrough
+  - SR-IOV device assignment
+  - Mediated devices, such as vGPUs

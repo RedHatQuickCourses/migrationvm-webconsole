@@ -1,6 +1,12 @@
-= Section 3
+= What is the purpose of live migration?
 
-* Create multiple copies of this section as needed.
-* Remove any unnecessary sections or chapter pages.
-* Customize the section as appropriate.
-* Ensure that each page contains a manageable amount of content.
+Cockpit-machines is the upstream project for the user interface (UI) for virtual machines. Cockpit-machines is a component of the RHEL web console.
+
+* Administrators using the RHEL web console with cockpit-machines often manage multiple linux systems and want to share virtual machine load between those systems.
+* Administrators can move VMs between geographically different systems.
+
+Administrators that have multiple systems in cockpit can live-migrate virtual machines between the systems if they are similar enough.
+
+This functionality is similar to Red Hat Enterprise Virtualization (RHEV) and Red Hat Openstack.
+
+This functionality is based on virsh migrate and has the same limitations. For information on the virsh migrate command is used at https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/configuring_and_managing_virtualization/index#migrating-a-virtual-machine-using-the-cli_migrating-virtual-machines/[Migrating a virtual machine by using the command-line interface^].

@@ -1,27 +1,20 @@
-= An Example Quick Course
+= Live VM migration using Web Console (Cockpit)
 :navtitle: Home
 
 == Introduction
 
-Course Title: Course title FIXME
+Red Hat Enterprise Linux 9 (Live VM migration using Web Console (Cockpit))
+
 
 Description:
-Course description FIXME
+This course will help you gain the information on how to Use the web console to migrate a running virtual machine to another hypervisor host.
 
-Duration: FIXME hours
+Duration: 40 min
 
 == Objectives
 
-On completing this course, you should be able to:
+You will be able accomplish the below area: 
 
-* Observable, measurable objective...
-* Observable, measurable objective...
-* Observable, measurable objective...
-
-== Prerequisites
-
-This course assumes that you have the following prior experience:
-
-* Course or experience...
-* Course or experience...
-* Course or experience...
+* Explain the purpose of live migrating a virtual machine.
+* Describe the prerequisites for a sucessful live migration.
+* Create a virtual machine and live migrate it to another host.

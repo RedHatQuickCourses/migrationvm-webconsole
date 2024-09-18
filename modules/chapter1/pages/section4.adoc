@@ -1,0 +1,9 @@
+= What is the lab setup in the exercise?
+
+The lab environment has three machines:
+
+* `workstation`: acts as a exporting Network File System (NFS) server.
+* `servera`: acts as the source host machine for the VM.
+* `serverb`: acts as the destination host machine to live-migrate the VM.
+
+Both `servera` and `serverb` to be setup with a shared storage pool and a shared volume.

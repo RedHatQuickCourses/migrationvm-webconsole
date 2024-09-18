@@ -1,7 +1,11 @@
-= Chapter 1
+= Live migrating a virtual machine using the web console.
 
-In this section, we cover... FIXME
+we will learn on the below points:
 
+How to Use the web console to migrate a running virtual machine to another hypervisor host.
 
-- Add or remove section entries in the `antora.yaml` file as needed.
-- Ensure you create or delete the corresponding directory for the chapter accordingly.
+Explain the purpose of live migrating a virtual machine.
+
+Create a virtual machine and live migrate it to another host.
+
+Describe the prerequisites for a sucessful live migration.

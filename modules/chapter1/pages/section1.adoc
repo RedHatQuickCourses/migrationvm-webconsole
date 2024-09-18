@@ -1,6 +1,5 @@
-= Section 1
+= What is virtualization?
 
-* Create multiple copies of this section as needed.
-* Remove any unnecessary sections or chapter pages.
-* Customize the section as appropriate.
-* Ensure that each page contains a manageable amount of content.
+RHEL 9 provides the virtualization functionality, which enables a machine running RHEL 9 to host multiple virtual machines (VMs), also referred to as guests. VMs enable you to safely test software configurations and features, run legacy software, or optimize the workload efficiency of your hardware.
+
+For this, refer to the https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_virtualization/introducing-virtualization-in-rhel_configuring-and-managing-virtualization/[Introducing virtualization in RHEL^] chapter.
