@@ -1,6 +1,6 @@
 = Live migrating a virtual machine using the web console.
 
-we will learn on the below points:
+We will learn on the below points:
 
 How to Use the web console to migrate a running virtual machine to another hypervisor host.
 
