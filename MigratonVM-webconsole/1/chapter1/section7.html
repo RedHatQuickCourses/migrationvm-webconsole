@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>What is live migration of a virtual machine? :: Live migration of virtual machine using web console</title>
-    <link rel="prev" href="section1.html">
-    <link rel="next" href="section3.html">
+    <title>Summary :: Live migration of virtual machine using web console</title>
+    <link rel="prev" href="section6.html">
+    <link rel="next" href="../appendix/appendix.html">
     <meta name="generator" content="Antora 3.1.3">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <script>var uiRootPath = '../../../_'</script>
@@ -60,7 +60,7 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section1.html">What is virtualization?</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="2">
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section2.html">What is live migration of a virtual machine?</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -75,7 +75,7 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section6.html">Guided Exercise: Guided solution</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item is-current-page" data-depth="2">
     <a class="nav-link" href="section7.html">Summary</a>
   </li>
 </ul>
@@ -119,7 +119,7 @@
   <ul>
     <li><a href="../index.html">Red Hat Enterprise Linux: Live migration of virtual machine using web console</a></li>
     <li><a href="index.html">Live migrating a virtual machine using the web console.</a></li>
-    <li><a href="section2.html">What is live migration of a virtual machine?</a></li>
+    <li><a href="section7.html">Summary</a></li>
   </ul>
 </nav>
 </div>
@@ -128,19 +128,29 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">What is live migration of a virtual machine?</h1>
-<div class="paragraph">
-<p>In a live migration, the VM continues to run on the source host machine. The Kernel-based Virtual Machine (KVM) transfers the memory pages of the VM to the destination host. When the migration is nearly complete, KVM briefly suspends the VM, and resumes it on the destination host.</p>
-</div>
-<div class="paragraph">
-<p>In case of a non-live migration, the KVM suspends the VM, copies its configuration and its memory to the destination host, and resumes the VM.</p>
-</div>
-<div class="paragraph">
-<p>For more information check the documentation on <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_virtualization/migrating-virtual-machines_configuring-and-managing-virtualization/" target="_blank" rel="noopener">How migrating virtual machines works</a>.</p>
+<h1 class="page">Summary</h1>
+<div class="ulist">
+<ul>
+<li>
+<p>Live migration needs a shared storage and shared volume on both source and destination hosts.</p>
+</li>
+<li>
+<p>The VM must be running for the migrate option to be available.</p>
+</li>
+<li>
+<p>Necessary ports should be open for the migration to succeed.</p>
+</li>
+<li>
+<p>The CPU architecture of the source and destination machine must be same.</p>
+</li>
+<li>
+<p>SSH keys of the root user much be exchanged between the source and destination machines.</p>
+</li>
+</ul>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="section1.html">What is virtualization?</a></span>
-  <span class="next"><a href="section3.html">What is the purpose of live migration?</a></span>
+  <span class="prev"><a href="section6.html">Guided Exercise: Guided solution</a></span>
+  <span class="next"><a href="../appendix/appendix.html">Appendix</a></span>
 </nav>
 </article>
   </div>
