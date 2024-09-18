@@ -1,0 +1,7 @@
+= Summary
+
+- Live migration needs a shared storage and shared volume on both source and destination hosts.
+- The VM must be running for the migrate option to be available.
+- Necessary ports should be open for the migration to succeed.
+- The CPU architecture of the source and destination machine must be same.
+- SSH keys of the root user much be exchanged between the source and destination machines.
