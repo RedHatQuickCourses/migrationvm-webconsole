@@ -1,8 +1,9 @@
 # About this Training
 
-FIXME: Add short description about your training here.
+This is Red Hat Enterprise Linux: Live migration of virtual machine using web console training. In aim to share the proper step to step guide to use web console to migrate a running virtual machine to another hypervisor host.
 
 # Objectives
 
-FIXME: Add here the list of objectives being covered in this training.
-
+* Explain the purpose of live migrating a virtual machine.
+* Describe the prerequisites for a sucessful live migration.
+* Create a virtual machine and live migrate it to another host.
